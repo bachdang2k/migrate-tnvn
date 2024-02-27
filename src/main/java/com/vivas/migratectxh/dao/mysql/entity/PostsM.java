@@ -1,4 +1,4 @@
-package com.vivas.migratectxh.entity.mysql;
+package com.vivas.migratectxh.dao.mysql.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

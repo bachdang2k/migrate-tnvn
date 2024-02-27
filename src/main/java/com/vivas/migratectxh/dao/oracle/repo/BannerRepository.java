@@ -1,6 +1,6 @@
-package com.vivas.migratectxh.repository.oracle;
+package com.vivas.migratectxh.dao.oracle.repo;
 
-import com.vivas.migratectxh.entity.oracle.Banners;
+import com.vivas.migratectxh.dao.oracle.entity.Banners;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

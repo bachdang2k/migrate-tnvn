@@ -1,3 +1,15 @@
+server:
+  port: 8088
+
+spring:
+  task:
+    execution:
+      pool:
+        core-size: 10
+        max-size: 30
+        queue-capacity: 1000
+      thread-name-prefix: migrate-
+
 app:
   datasource:
     mysql:

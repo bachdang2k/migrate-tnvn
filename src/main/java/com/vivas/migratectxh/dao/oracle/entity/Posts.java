@@ -1,4 +1,4 @@
-package com.vivas.migratectxh.entity.oracle;
+package com.vivas.migratectxh.dao.oracle.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,8 +1,7 @@
-package com.vivas.migratectxh.config;
+package com.vivas.migratectxh.dao.connection;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,39 +18,39 @@ import java.util.HashMap;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(
-        entityManagerFactoryRef = "mysqlEntityManagerFactory",
-        basePackages = {"com.vivas.migratectxh.repository.mysql"},
-        transactionManagerRef = "mysqlTransactionManager"
+@EnableJpaRepositories (
+        entityManagerFactoryRef = "oracleEntityManagerFactory",
+        basePackages = {"com.vivas.migratectxh.dao.oracle.repo"},
+        transactionManagerRef = "oracleTransactionManager"
 )
-public class MysqlConfig {
+public class OracleConfig {
 
-    @Value("${app.datasource.mysql.username}")
+    @Value("${app.datasource.oracle.username}")
     private String username;
 
-    @Value("${app.datasource.mysql.password}")
+    @Value("${app.datasource.oracle.password}")
     private String password;
 
-    @Value("${app.datasource.mysql.url}")
+    @Value("${app.datasource.oracle.url}")
     private String url;
 
-    @Value("${app.datasource.mysql.driver-class-name}")
+    @Value("${app.datasource.oracle.driver-class-name}")
     private String driverClassName;
 
-    @Value("${app.datasource.mysql.hikari.maxPoolSize}")
+    @Value("${app.datasource.oracle.hikari.maxPoolSize}")
     private Integer maxPoolSize;
 
-    @Value("${app.datasource.mysql.hikari.connectionTimeout}")
+    @Value("${app.datasource.oracle.hikari.connectionTimeout}")
     private Long connectionTimeout;
 
-    @Value("${app.datasource.mysql.hikari.idleTimeout}")
+    @Value("${app.datasource.oracle.hikari.idleTimeout}")
     private Long idleTimeout;
 
-    @Value("${app.datasource.mysql.hikari.maxLifetime}")
+    @Value("${app.datasource.oracle.hikari.maxLifetime}")
     private Long maxLifetime;
 
     @Primary
-    @Bean(name= "mysqlDataSource")
+    @Bean(name= "oracleDataSource")
     public DataSource dataSource() {
 
         HikariConfig hikariConfig = new HikariConfig();
@@ -67,31 +66,27 @@ public class MysqlConfig {
         return new HikariDataSource(hikariConfig);
     }
 
-    @Bean(name = "mysqlEntityManagerFactory")
+    @Bean(name = "oracleEntityManagerFactory")
     @Primary
-    public LocalContainerEntityManagerFactoryBean mysqlEntityManager(@Qualifier("mysqlDataSource") DataSource dataSource) {
+    public LocalContainerEntityManagerFactoryBean mysqlEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource);
-        em.setPackagesToScan("com.vivas.migratectxh.entity.mysql");
+        em.setDataSource(dataSource());
+        em.setPackagesToScan("com.vivas.migratectxh.dao.oracle.entity");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         HashMap<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "update");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
-        properties.put("hibernate.hibernate.show.sql", "true");
-        properties.put("hibernate.hibernate.format_sql", "true");
+        //properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.OracleDialect");
         em.setJpaPropertyMap(properties);
         return em;
     }
 
-
-    @Bean("oracleTransactionManager")
+    @Bean("mysqlTransactionManager")
     @Primary
-    public PlatformTransactionManager transactionManager(
-            @Qualifier("mysqlEntityManagerFactory") LocalContainerEntityManagerFactoryBean mysqlEntityManager) {
+    public PlatformTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(mysqlEntityManager.getObject());
+        transactionManager.setEntityManagerFactory(mysqlEntityManager().getObject());
         return transactionManager;
     }
 
