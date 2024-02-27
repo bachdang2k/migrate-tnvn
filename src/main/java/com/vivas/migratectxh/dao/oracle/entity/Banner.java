@@ -1,4 +1,4 @@
-package com.vivas.migratectxh.dao.mysql.entity;
+package com.vivas.migratectxh.dao.oracle.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,47 +16,46 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "categories")
-public class CategoriesM {
+@Table(name = "banner")
+public class Banner {
 
     @Id
     @Column(name = "id")
     private Long Id;
 
-    @Column(name = "created_at")
+    @Column(name = "create_time")
     private Date createTime;
 
-    @Column(name = "updated_at")
+    @Column(name = "update_time")
     private Date updateTime;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "parent_id")
-    private Integer parentId;
+    @Column(name = "image")
+    private String image;
 
-    @Column(name = "mother_id")
-    private Integer motherId;
+    @Column(name = "post_ref")
+    private Integer postRef;
 
-    @Column(name = "cat_level")
-    private Short level;
+    @Column(name = "link")
+    private String urlRef;
 
     @Column(name = "type")
-    private Short type;
+    private String type;
 
-    @Column(name = "path_id")
-    private String pathId;
+    @Column(name = "content")
+    private String content;
 
     @Column(name = "status")
     private Short status;
 
     @Column(name = "position")
-    private Integer position;
+    private String position;
 
-    @Column(name = "childs")
-    private Integer childNum;
+    @Column(name = "public_date")
+    private Date publicDate;
 
     @Column(name = "app_id")
     private Short appId;
-
 }

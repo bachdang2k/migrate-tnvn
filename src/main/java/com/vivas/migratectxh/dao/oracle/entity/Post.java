@@ -17,7 +17,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "tnvn_content")
-public class Posts {
+public class Post {
 
     @Id
     @Column(name = "id")

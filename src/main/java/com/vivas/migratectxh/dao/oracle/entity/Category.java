@@ -16,7 +16,7 @@ import java.util.Date;
 @Getter @Setter
 @Entity
 @Table(name = "categories")
-public class Categories {
+public class Category {
 
     @Id
     @Column(name = "id")

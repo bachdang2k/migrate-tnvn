@@ -1,9 +1,9 @@
 package com.vivas.migratectxh.controller;
 
-import com.vivas.migratectxh.dao.mysql.entity.CategoriesM;
-import com.vivas.migratectxh.dao.mysql.entity.PostsM;
-import com.vivas.migratectxh.dao.mysql.repository.MCategoryRepository;
-import com.vivas.migratectxh.dao.mysql.repository.MPostRepository;
+import com.vivas.migratectxh.dao.oracle.entity.Category;
+import com.vivas.migratectxh.dao.oracle.entity.Post;
+import com.vivas.migratectxh.dao.oracle.repo.CategoryRepository;
+import com.vivas.migratectxh.dao.oracle.repo.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +18,18 @@ import java.util.List;
 @RequestMapping("/api/ctxh/migrate")
 public class MigrateController {
 
-    private final MPostRepository mPostRepository;
+    private final PostRepository postRepository;
 
-    private final MCategoryRepository mCategoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @GetMapping("/all_posts")
-    public ResponseEntity<List<PostsM>> getAllPost() {
-        return ResponseEntity.status(HttpStatus.OK).body(mPostRepository.findAll());
+    public ResponseEntity<List<Post>> getAllPost() {
+        return ResponseEntity.status(HttpStatus.OK).body(postRepository.findAll());
     }
 
     @GetMapping("/all_categories")
-    public ResponseEntity<List<CategoriesM>> getAllCategories() {
-        return ResponseEntity.status(HttpStatus.OK).body(mCategoryRepository.findAll());
+    public ResponseEntity<List<Category>> getAllCategories() {
+        return ResponseEntity.status(HttpStatus.OK).body(categoryRepository.findAll());
     }
 
 }
