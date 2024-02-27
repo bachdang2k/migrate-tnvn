@@ -1,9 +1,12 @@
 app:
   datasource:
     mysql:
-      url: jdbc:mysql://localhost:3306/cms_hst
+#      url: jdbc:mysql://10.84.86.33:3306/common_hnd?tinyInt1isBit=false
+#      username: rdvivas
+#      password: rdvivas@123
+      url: jdbc:mysql://localhost:3306/common_hnd?createDatabaseIfNotExist=true
       username: root
-      password: kien270900
+      password: abc@123
       driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
         connectionTimeout: 10000
