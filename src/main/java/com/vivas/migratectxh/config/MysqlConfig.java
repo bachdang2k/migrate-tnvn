@@ -2,12 +2,11 @@ package com.vivas.migratectxh.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -26,24 +25,45 @@ import java.util.Objects;
         basePackages = {"com.vivas.migratectxh.repository.mysql"},
         transactionManagerRef = "mysqlTransactionManager"
 )
-@RequiredArgsConstructor
 public class MysqlConfig {
 
-    public final Environment env;
+    @Value("${app.datasource.mysql.username}")
+    private String username;
+
+    @Value("${app.datasource.mysql.password}")
+    private String password;
+
+    @Value("${app.datasource.mysql.url}")
+    private String url;
+
+    @Value("${app.datasource.mysql.driver-class-name}")
+    private String driverClassName;
+
+    @Value("${app.datasource.mysql.hikari.maxPoolSize}")
+    private Integer maxPoolSize;
+
+    @Value("${app.datasource.mysql.hikari.connectionTimeout}")
+    private Long connectionTimeout;
+
+    @Value("${app.datasource.mysql.hikari.idleTimeout}")
+    private Long idleTimeout;
+
+    @Value("${app.datasource.mysql.hikari.maxLifetime}")
+    private Long maxLifetime;
 
     @Primary
     @Bean(name= "mysqlDataSource")
     public DataSource dataSource() {
 
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setUsername(env.getProperty("app.datasource.mysql.username"));
-        hikariConfig.setPassword(env.getProperty("app.datasource.mysql.password"));
-        hikariConfig.setJdbcUrl(env.getProperty("app.datasource.mysql.url"));
-        hikariConfig.setDriverClassName(Objects.requireNonNull(env.getProperty("app.datasource.mysql.driver-class-name")));
-        hikariConfig.setMaximumPoolSize(Integer.parseInt(Objects.requireNonNull(env.getProperty("app.datasource.mysql.hikari.maxPoolSize"))));
-        hikariConfig.setConnectionTimeout(Long.parseLong(Objects.requireNonNull(env.getProperty("app.datasource.mysql.hikari.connectionTimeout"))));
-        hikariConfig.setIdleTimeout(Long.parseLong(Objects.requireNonNull(env.getProperty("app.datasource.mysql.hikari.idleTimeout"))));
-        hikariConfig.setMaxLifetime(Long.parseLong(Objects.requireNonNull(env.getProperty("app.datasource.mysql.hikari.maxLifetime"))));
+        hikariConfig.setUsername(username);
+        hikariConfig.setPassword(password);
+        hikariConfig.setJdbcUrl(url);
+        hikariConfig.setDriverClassName(driverClassName);
+        hikariConfig.setMaximumPoolSize(maxPoolSize);
+        hikariConfig.setConnectionTimeout(connectionTimeout);
+        hikariConfig.setIdleTimeout(idleTimeout);
+        hikariConfig.setMaxLifetime(maxLifetime);
 
         return new HikariDataSource(hikariConfig);
     }

@@ -2,11 +2,10 @@ package com.vivas.migratectxh.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
-import java.util.Objects;
 
 @Configuration
 @EnableTransactionManagement
@@ -25,24 +23,45 @@ import java.util.Objects;
         basePackages = {"com.vivas.migratectxh.repository.oracle"},
         transactionManagerRef = "oracleTransactionManager"
 )
-@RequiredArgsConstructor
 public class OracleConfig {
 
-    public final Environment env;
+    @Value("${app.datasource.oracle.username}")
+    private String username;
+
+    @Value("${app.datasource.oracle.password}")
+    private String password;
+
+    @Value("${app.datasource.oracle.url}")
+    private String url;
+
+    @Value("${app.datasource.oracle.driver-class-name}")
+    private String driverClassName;
+
+    @Value("${app.datasource.oracle.hikari.maxPoolSize}")
+    private Integer maxPoolSize;
+
+    @Value("${app.datasource.oracle.hikari.connectionTimeout}")
+    private Long connectionTimeout;
+
+    @Value("${app.datasource.oracle.hikari.idleTimeout}")
+    private Long idleTimeout;
+
+    @Value("${app.datasource.oracle.hikari.maxLifetime}")
+    private Long maxLifetime;
 
     @Primary
     @Bean(name= "oracleDataSource")
     public DataSource dataSource() {
 
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setUsername(env.getProperty("app.datasource.oracle.username"));
-        hikariConfig.setPassword(env.getProperty("app.datasource.oracle.password"));
-        hikariConfig.setJdbcUrl(env.getProperty("app.datasource.oracle.url"));
-        hikariConfig.setDriverClassName(Objects.requireNonNull(env.getProperty("app.datasource.oracle.driver-class-name")));
-        hikariConfig.setMaximumPoolSize(Integer.parseInt(Objects.requireNonNull(env.getProperty("app.datasource.oracle.hikari.maxPoolSize"))));
-        hikariConfig.setConnectionTimeout(Long.parseLong(Objects.requireNonNull(env.getProperty("app.datasource.oracle.hikari.connectionTimeout"))));
-        hikariConfig.setIdleTimeout(Long.parseLong(Objects.requireNonNull(env.getProperty("app.datasource.oracle.hikari.idleTimeout"))));
-        hikariConfig.setMaxLifetime(Long.parseLong(Objects.requireNonNull(env.getProperty("app.datasource.oracle.hikari.maxLifetime"))));
+        hikariConfig.setUsername(username);
+        hikariConfig.setPassword(password);
+        hikariConfig.setJdbcUrl(url);
+        hikariConfig.setDriverClassName(driverClassName);
+        hikariConfig.setMaximumPoolSize(maxPoolSize);
+        hikariConfig.setConnectionTimeout(connectionTimeout);
+        hikariConfig.setIdleTimeout(idleTimeout);
+        hikariConfig.setMaxLifetime(maxLifetime);
 
         return new HikariDataSource(hikariConfig);
     }
